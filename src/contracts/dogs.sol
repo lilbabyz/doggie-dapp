@@ -35,6 +35,12 @@ contract DoggieStore {
 
 
     mapping(uint256 => Dog) internal dogs;
+
+    /* Added a modifier of onlyowner which removes the usage of require statements again and again*/
+    modifier onlyOwner(uint _index){
+        require(msg.sender == dogs[_index].owner,"Only the owner can access this functions");
+        _;
+    }
     
  // This function will add a new dog to the listing
  function addDog(
@@ -70,14 +76,12 @@ contract DoggieStore {
 
 
      // This function will change the image url of the listing
-     function changeImageurl(uint _index, string memory _url) public {
-        require(msg.sender == dogs[_index].owner, "Only creator can change image");
+     function changeImageurl(uint _index, string memory _url) public onlyOwner(_index){
         dogs[_index].url = _url;
     }
 
     // This function will change the price of dogs in a listing
-     function changeDogPrice(uint _index, uint _newPrice) public {
-        require(msg.sender == dogs[_index].owner, "Only creator can change the price");
+     function changeDogPrice(uint _index, uint _newPrice) public onlyOwner(_index){
         dogs[_index].price = _newPrice;
     }
 // This function will edit the listing with the new given parameters
@@ -86,9 +90,7 @@ contract DoggieStore {
         string memory _url,
         string memory _description,
         string memory _location
-    ) public {
-        require(msg.sender == dogs[_index].owner, "Only owner can change dog information");
-
+    ) public onlyOwner(_index){
         uint _price = dogs[_index].price;
         uint _totalDogs = dogs[_index].totalDogs;
         uint _sold = dogs[_index].sold;
@@ -151,5 +153,10 @@ by calling the calculateTotalAvailableDogs() function everytime a dog is bought 
     function getdogsLength() public view returns (uint) {
         return (dogsLength);
     }
-  
+
+    /* Added a funtion for owner's to remove their listing - Will be useful if there 
+    is accidental reEntry or if they decide not to sell */ 
+    function removeDogs(uint _index) public onlyOwner(_index){
+        delete(dogs[_index]);
+    }
 }
