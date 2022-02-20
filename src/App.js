@@ -18,7 +18,7 @@ import IERC from "./contracts/IERC.abi.json";
 const ERC20_DECIMALS = 18;
 
 
-const contractAddress = "0xB9Eb98a86e0a1a26FC22c8827932EE9ffF1140C4";
+const contractAddress = "0xFc94bC374DF80F2413bEE0078338e7f84276f7B8";
 const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1";
 
 
@@ -140,12 +140,13 @@ function App() {
               .shiftedBy(ERC20_DECIMALS).toString();
             await cUSDContract.methods.approve(contractAddress, cost)
               .send({ from: address });
-            await contract.methods.BuyDog(_index, cost).send({ from: address });
+            await contract.methods.BuyDog(_index).send({ from: address });
             getDogs();
             getBalance();
+            alert("Purchase Successfull");
           } catch (error) {
            console.log(error);
-           alert("Purchase Successfull");
+           
           }};
 
   useEffect(() => {

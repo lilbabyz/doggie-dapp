@@ -60,16 +60,17 @@ contract DoggieStore {
     }
 
 
+
+
     /* This function will automatically calculate the
      total number of dogs available by subtracting
-      the total number of dogs sold from the total available dogs.*/
-    function calculateTotalAvailableDogs(uint _index) internal {
-        uint availableDogs = dogs[_index].totalDogs - dogs[_index].sold;
-        dogs[_index].totalDogs = availableDogs;
+      1 dog every time someone purchases a dog.*/
+    function calculateTotalAvailableDogs(uint _index) public {
+        dogs[_index].totalDogs --;
     }
 
 
-     // This function will change the image url of the listing
+     //This function will change the image url of the listing
      function changeImageurl(uint _index, string memory _url) public {
         require(msg.sender == dogs[_index].owner, "Only creator can change image");
         dogs[_index].url = _url;
@@ -128,12 +129,22 @@ contract DoggieStore {
     }
 
 
+    // this function will remove a dog listing and only the owner of the listing can do that. This is useful incase of accidental re-entry
+
+    function removeDogs(uint _index) external {
+        require(msg.sender == dogs[_index].owner, "Only owner can delete listing");
+        delete(dogs[_index]);
+    }
+
+
 
 
 /* This function will facilitate the purchase of a dog 
 and increase the number of sold dogs and then calculate the total available dogs 
-by calling the calculateTotalAvailableDogs() function everytime a dog is bought from a listing*/
+by calling the calculateTotalAvailableDogs() function everytime a dog is bought from a listing. it
+also checks to make sure the there's available dogs for sale before carrying out the transaction*/
     function BuyDog(uint _index) public payable  {
+        require(dogs[_index].totalDogs >= 1, "Sold Out");
         require(
           IERC20Token(cUsdTokenAddress).transferFrom(
             msg.sender,

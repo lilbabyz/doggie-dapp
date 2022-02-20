@@ -4,7 +4,7 @@ export const Dogs = (props) => {
 
 
 
-  return <div className="row">
+  return <div className="dog_con">
     {props.dogss.map((dog) => (
       <div className="col-3">
      <div className="card" >

@@ -49,3 +49,8 @@ body {
   margin: 20px;
 }
 
+.dog_con{
+  display: grid;
+   grid-template-columns: repeat(3, 1fr);
+}
+
