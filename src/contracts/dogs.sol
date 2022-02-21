@@ -68,6 +68,12 @@ contract DoggieStore {
     function calculateTotalAvailableDogs(uint _index) public {
         dogs[_index].totalDogs --;
     }
+    // this function calculates the age of a dog by taking in the dogage in human years and multiplying it by 7
+    function calculateDogAge(uint _humanyears) public pure returns(uint){
+        uint dogAge;
+        dogAge = _humanyears * 7;
+        return (dogAge);
+    }
 
 
      //This function will change the image url of the listing
